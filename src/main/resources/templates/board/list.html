@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <title>Board List</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <form action="/board/list" method="get" class="mb-3 flex justify-end">
+        <input type="text" name="keyword" placeholder="검색어 입력" class="input input-sm input-bordered" autocomplete="off"/>
+        <input type="hidden" name="page" value="1" />
+
+    </form>
+
+    <div class="overflow-x-auto">
+        <table class="table table-zebra">
+            <!-- head -->
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>제목</th>
+                <th>작성자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boardPage.content}">
+                <td th:text="${board.id}"></td>
+                <td>
+                    <a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.title}" class="hover:text-blue-600"></a>
+                </td>
+                <td th:text="${board.writer}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+<!--    <div th:text="${page.page}"></div>-->
+    <div class="join mt-3">
+        <a class="join-item btn" th:href="@{/board/list(page=1, size=${boardPage.size}, keyword=${page.keyword})}">«</a>
+        <a class="join-item btn" th:if="${page.page > 1}" th:href="@{/board/list(page=${page.page - 1}, size=${boardPage.size}, keyword=${page.keyword})}">‹</a>
+        <div th:each="pageNum : ${#numbers.sequence(page.startPage, page.endPage )}">
+            <a class="join-item btn" th:href="@{/board/list(page=${pageNum}, size=${boardPage.size}, keyword=${page.keyword})}"
+               th:text="${pageNum }" th:classappend="${pageNum == page.page} ? 'btn-active' : '' "></a>
+        </div>
+        <a class="join-item btn" th:href="@{/board/list(page=${page.page + 1}, size=${boardPage.size}, keyword=${page.keyword})}" th:if="${page.page  < page.totalPages}">›</a>
+        <a class="join-item btn" th:href="@{/board/list(page=${page.totalPages}, size=${boardPage.size}, keyword=${page.keyword})}">»</a>
+    </div>
+
+
+    <a class="btn float-right mt-3 btn-neutral" href="/board/write">글 작성</a>
+
+
+</div>
+</body>
+</html>

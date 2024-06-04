@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <title>New Board</title>
+    <!-- jQuery CDN -->
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <script>
+        function deleteBoard() {
+            const password = $('#password').val();
+            const boardId = $('#boardId').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/board/delete/' + boardId,
+                data: { password: password },
+                success: function(response) {
+                    // 삭제 성공시의 동작
+                    alert("성공적으로 삭제되었습니다")
+                    window.location.href = "/board/list";
+                },
+                error: function(xhr, status, error) {
+                    // 에러 발생시의 동작
+                    alert("잘못된 비밀번호입니다")
+                    window.location.href = "/board/list";
+                }
+            });
+        }
+    </script>
+    <div class="w-3/4 m-auto">
+        <div class="w-full mb-2 px-3 font-bold border-b-[1px] border-gray-200 text-lg" th:text="${board.title}"></div>
+        <div class="mb-2 px-3 text-sm text-gray-600" th:text="|글쓴이 ${board.writer}|"></div>
+        <div class="w-full mb-4 p-3 border-[1px] rounded-xl border-gray-200 h-80 " th:text="${board.content}"></div>
+
+        <div class="flex justify-between">
+            <div class="flex gap-1 justify-start">
+                <a class="btn float-right mt-3 btn-neutral" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
+                <button class="btn float-right mt-3 btn-error" onclick="document.getElementById('my_modal_1').showModal()">삭제</button>
+            </div>
+            <a class="btn float-right mt-3 " href="/board/list">글 목록</a>
+        </div>
+    </div>
+
+    <dialog id="my_modal_1" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-3">글 삭제</h3>
+            <input type="hidden" id="boardId" th:value="${board.id}" />
+            <input class="input input-bordered w-3/4" type="password" id="password" name="password" placeholder="password" />
+            <div class="modal-action ">
+                <button class="btn btn-error mr-2" onclick="deleteBoard()">삭제</button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop ">
+            <button>close</button>
+        </form>
+    </dialog>
+
+</div>
+
+<!-- jQuery를 사용하여 Ajax 요청을 보내는 스크립트 -->
+
+
+</body>
+</html>

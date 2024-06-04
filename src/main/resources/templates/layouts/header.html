@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Header</title>
+</head>
+<body>
+<header layout:fragment="header">
+
+        <div class="navbar bg-base-100">
+            <div class="flex-1">
+                <a class="btn btn-ghost text-xl" href="/board/list">SpringBoard</a>
+            </div>
+            <div class="flex-none">
+                <ul class="menu menu-horizontal px-1 items-center">
+                    <li><a href="/board/list">글 목록</a></li>
+
+<!--                    <li>-->
+<!--                        <details>-->
+<!--                            <summary>-->
+<!--                                Parent-->
+<!--                            </summary>-->
+<!--                            <ul class="p-2 bg-base-100 rounded-t-none">-->
+<!--                                <li><a></a></li>-->
+<!--                                <li><a>Link 2</a></li>-->
+<!--                            </ul>-->
+<!--                        </details>-->
+<!--                    </li>-->
+                </ul>
+            </div>
+        </div>
+
+</header>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <header>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+    </header>
+    <body>
+        <div class="max-w-screen-lg m-auto">
+            <header layout:include="~{layouts/header :: header}"></header>
+            <div class="px-10 mt-2">
+                <main layout:fragment="content">
+                    <!-- 개별 페이지 내용이 여기에 삽입됩니다 -->
+                </main>
+            </div>
+
+<!--            <div layout:include="~{layouts/footer :: footer}"></div>-->
+        </div>
+    </body>
+</html>

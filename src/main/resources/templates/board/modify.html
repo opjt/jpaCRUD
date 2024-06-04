@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <title>Modify Board</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <script>
+        $(document).ready(function() {
+            $('form').on('submit', function(event) {
+                let isValid = true;
+
+                // 제목 유효성 검사
+                if ($('#title').val().trim() === '') {
+                    alert('제목을 입력하세요.');
+                    $('#title').focus();
+                    return false;
+                }
+
+                // 내용 유효성 검사
+                if ($('#content').val().trim() === '') {
+                    alert('내용을 입력하세요.');
+                    $('#content').focus();
+                    return false;
+                }
+
+                // 비밀번호 유효성 검사
+                if ($('#password').val().trim() === '') {
+                    alert('비밀번호를 입력하세요.');
+                    $('#password').focus();
+                    return false;
+                }
+                return isValid;
+            });
+        });
+    </script>
+    <form th:action="@{/board/modify/{id}(id=${board.id})}" method="post" th:object="${board}" class="w-3/4 m-auto">
+
+    <input type="hidden" th:field="*{id}" />
+
+        <input type="text" id="title" th:field="*{title}" placeholder="제목" class="input input-bordered w-full mb-4" />
+
+        <textarea id="content" th:field="*{content}" placeholder="내용" class="textarea input-bordered w-full h-80 mb-4"></textarea>
+
+        <div class="flex justify-between">
+            <div>
+                <input type="text" id="writer" th:field="*{writer}"  class="input input-disabled mr-2 w-auto" disabled />
+                <input type="password" id="password" th:field="*{password}"  class="input input-bordered w-auto" placeholder="password" />
+            </div>
+
+            <button class="btn btn-neutral" type="submit">수정</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
