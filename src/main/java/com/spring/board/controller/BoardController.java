@@ -35,7 +35,6 @@ public class BoardController {
     public String listBoards(PageDTO pageDTO, Model model) throws Exception {
         Pageable pageable = PageRequest.of(pageDTO.getPage()-1, pageDTO.getSize());
         Page<Board> boardPage = boardService.boardList(pageDTO.getKeyword(), pageable);
-
         pageDTO.setTotalPages(boardPage.getTotalPages());
         pageDTO.setStartPage(Math.max(1, pageDTO.getPage() - 2));
         pageDTO.setEndPage(Math.min(boardPage.getTotalPages(), pageDTO.getPage() + 2));
@@ -52,7 +51,6 @@ public class BoardController {
 
     @PostMapping("/board/")
     public String saveBoard(@ModelAttribute("board") BoardDTO board) throws Exception {
-        System.out.println(board.toString());
         Board updateBoard = boardService.writeBoard(board);
         return "redirect:/board/list";
     }

@@ -48,13 +48,13 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public Board updateBoard(BoardDTO boardDto) {
 
-        Board oldBoard = boardRepository.findById(boardDto.getId()).orElseThrow(() -> new CustomException("해당 게시물을 찾을 수 없습니다.", "/board/list"));
+        Board oldBoard = boardRepository.findById(boardDto.getId())
+                .orElseThrow(() -> new CustomException("해당 게시물을 찾을 수 없습니다.", "/board/list"));
 
         if (!oldBoard.getPassword().equals(boardDto.getPassword())) {
             // 비밀번호가 일치하지 않는 경우에는 CustomException을 발생시킵니다.
             throw new CustomException("비밀번호가 일치하지 않습니다.", "/board/" + boardDto.getId());
         }
-
         Board board = Board.builder()
                 .id(boardDto.getId())
                 .title(boardDto.getTitle())

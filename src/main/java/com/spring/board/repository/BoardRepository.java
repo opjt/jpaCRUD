@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findAllByOrderByIdDesc(Pageable pageable);
-
     @Query("SELECT b FROM Board b WHERE b.title LIKE %:keyword% OR b.content LIKE %:keyword%")
     Page<Board> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
