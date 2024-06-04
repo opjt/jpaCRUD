@@ -12,6 +12,26 @@
 <div layout:fragment="content">
 
     <script>
+        function deleteComment(commentId) {
+
+            const password = $(`input[data-idx=${commentId}]`).val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/comment/delete/' + commentId,
+                data: { password: password },
+                success: function(response) {
+                    // 삭제 성공시의 동작
+                    alert("성공적으로 삭제되었습니다")
+                    window.location.href = `/board/[[${board.id}]]`
+                },
+                error: function(xhr, status, error) {
+                    // 에러 발생시의 동작
+                    alert("잘못된 비밀번호입니다")
+                    window.location.href =`/board/[[${board.id}]]`
+                }
+            });
+        }
         function deleteBoard() {
             const password = $('#password').val();
             const boardId = $('#boardId').val();
@@ -35,8 +55,13 @@
     </script>
     <div class="w-3/4 m-auto">
         <div class="w-full mb-2 px-3 font-bold border-b-[1px] border-gray-200 text-lg" th:text="${board.title}"></div>
-        <div class="mb-2 px-3 text-sm text-gray-600" th:text="|글쓴이 ${board.writer}|"></div>
-        <div class="w-full mb-4 p-3 border-[1px] rounded-xl border-gray-200 h-80 " th:text="${board.content}"></div>
+        <div class="mb-2 px-3">
+            <span class=" text-sm text-gray-600" th:text="|글쓴이 ${board.writer}|"></span>
+            <span class="float-right text-sm text-gray-600" th:text="${#temporals.format(board.createdAt,'YYYY-MM-dd')}"></span>
+        </div>
+
+        <div class="w-full  p-3 border-[1px] rounded-xl border-gray-200 h-80 " th:text="${board.content}"></div>
+        <div class="text-sm text-gray-600 " th:text="|${#temporals.format(board.updatedAt,'YYYY-MM-dd')} 수정됨|"  th:if="${board.updatedAt != null}"></div>
 
         <div class="flex justify-between">
             <div class="flex gap-1 justify-start">
@@ -45,7 +70,46 @@
             </div>
             <a class="btn float-right mt-3 " href="/board/list">글 목록</a>
         </div>
+
+        <div class="mt-5">
+            <p class="font-bold text-lg ">댓글</p>
+
+            <div class="mt-2 border-[2px] border-gray-200 p-2 rounded-2xl">
+                <form th:action="@{/comment/{id}(id=${board.id})}" method="post" >
+                    <div class="">
+
+                            <input name="writer" class="input input-bordered input-sm" placeholder="작성자" autocomplete="off"/>
+                            <input type="password" name="password" class="input input-bordered input-sm ml-1" placeholder="password"/>
+                            <input type="hidden" name="boardId" th:value="${board.id}"/>
+                            <button class="btn btn-sm float-right" type="submit">등록</button>
+
+                    </div>
+
+                    <textarea name="content" placeholder="내용" class="textarea w-full textarea-bordered mt-1"></textarea>
+                </form>
+            </div>
+
+
+            <ul class="mt-3" th:each="comment : ${board.comments}">
+                <li class="border-b-[1px] border-gray-200 pb-2 mt-1">
+                    <div>
+                        <span class="font-bold" th:text="${comment.writer}"></span>
+                        <span class="text-sm text-gray-600" th:text="${#temporals.format(comment.createdAt,'YYYY-MM-dd')}"></span>
+                        <span class="float-right ">
+                            <input th:attr="data-idx=${comment.id}" type="password" class="input input-sm input-bordered" placeholder="password"/>
+                            <span  th:onclick="|deleteComment(${comment.id})|" class="btn btn-sm">삭제</span>
+                        </span>
+                    </div>
+
+                    <div class="" th:text="${comment.content}"></div>
+                </li>
+
+
+            </ul>
+
+        </div>
     </div>
+
 
     <dialog id="my_modal_1" class="modal">
         <div class="modal-box">

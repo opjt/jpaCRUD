@@ -28,9 +28,6 @@ public class BoardController {
 
     private final BoardService boardService;
 
-
-
-
     @GetMapping("/board/list")
     public String listBoards(PageDTO pageDTO, Model model) throws Exception {
         Pageable pageable = PageRequest.of(pageDTO.getPage()-1, pageDTO.getSize());
@@ -62,6 +59,7 @@ public class BoardController {
             String errorMessage = URLEncoder.encode("찾을 수 없는 글입니다", "UTF-8");
             return "redirect:/errorPage?errorMessage=" + errorMessage;
         }
+        log.info(board.getComments().toString());
         model.addAttribute("board", board);
         return "board/read";
     }
@@ -82,7 +80,7 @@ public class BoardController {
         boardDto.setId(id); // 기존 게시물의 ID를 설정하여 업데이트를 수행
         log.info(boardDto.toString());
         Board board = boardService.updateBoard(boardDto);
-        return "redirect:/board/list";
+        return "redirect:/board/" + id;
     }
 
     @PostMapping("/board/delete/{id}")

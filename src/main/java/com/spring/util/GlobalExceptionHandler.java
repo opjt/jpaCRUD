@@ -19,10 +19,10 @@ public class GlobalExceptionHandler {
         return "common/error"; // 에러 페이지로 이동
     }
 
-    @ExceptionHandler(Exception.class)
-    public String handleException(Exception ex, Model model) {
-        model.addAttribute("errorMessage", "알 수 없는 오류가 발생했습니다.");
-        return "common/error";
-    }
+//    @ExceptionHandler(Exception.class)
+//    public String handleException(Exception ex, Model model) {
+//        model.addAttribute("errorMessage", "알 수 없는 오류가 발생했습니다.");
+//        return "common/error";
+//    }
 
 }
