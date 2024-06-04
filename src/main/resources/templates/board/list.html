@@ -37,7 +37,7 @@
         </table>
     </div>
 
-<!--    <div th:text="${page.page}"></div>-->
+
     <div class="join mt-3">
         <a class="join-item btn" th:href="@{/board/list(page=1, size=${boardPage.size}, keyword=${page.keyword})}">«</a>
         <a class="join-item btn" th:if="${page.page > 1}" th:href="@{/board/list(page=${page.page - 1}, size=${boardPage.size}, keyword=${page.keyword})}">‹</a>
